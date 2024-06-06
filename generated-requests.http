@@ -1,0 +1,161 @@
+### Sign Up
+POST http://localhost:8080/auth/signup
+Content-Type: application/json
+
+{
+  "fullName": "Student Studentsson",
+  "email": "student@example.com",
+  "password": "SecurePassword123"
+}
+
+### Log In and Set Token
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "student@example.com",
+  "password": "SecurePassword123"
+}
+
+> {%
+    client.global.set("jwt_token", response.body.token);
+%}
+
+### Get All Users
+GET http://localhost:8080/users/all
+Authorization: Bearer {{jwt_token}}
+
+### Get User by Email
+GET http://localhost:8080/users/student@example.com
+Authorization: Bearer {{jwt_token}}
+
+### Create Note
+POST http://localhost:8080/notes
+Content-Type: application/json
+Authorization: Bearer {{jwt_token}}
+
+{
+  "title": "New Note Title",
+  "content": "Content of the new note",
+  "userId": 1
+}
+
+### Get All Notes
+GET http://localhost:8080/notes
+Authorization: Bearer {{jwt_token}}
+
+### Get All Notes with Username
+GET http://localhost:8080/notes/with-username
+Authorization: Bearer {{jwt_token}}
+
+### Get Note by ID
+GET http://localhost:8080/notes/1
+Authorization: Bearer {{jwt_token}}
+
+### Update Note
+PUT http://localhost:8080/notes/1
+Content-Type: application/json
+Authorization: Bearer {{jwt_token}}
+
+{
+  "title": "Updated Note Title",
+  "content": "Updated content of the note",
+  "userId": 1
+}
+
+### Delete Note
+DELETE http://localhost:8080/notes/1
+Authorization: Bearer {{jwt_token}}
+
+### Invalid Sign Up Request (missing email)
+POST http://localhost:8080/auth/signup
+Content-Type: application/json
+
+{
+  "fullName": "Student Studentsson",
+  "password": "SecurePassword123"
+}
+
+### Invalid Sign Up Request (invalid email format)
+POST http://localhost:8080/auth/signup
+Content-Type: application/json
+
+{
+  "fullName": "Student Studentsson",
+  "email": "invalid-email-format",
+  "password": "SecurePassword123"
+}
+
+### Invalid Sign Up Request (missing password)
+POST http://localhost:8080/auth/signup
+Content-Type: application/json
+
+{
+  "fullName": "Student Studentsson",
+  "email": "student@example.com"
+}
+
+### Invalid Sign Up Request (password too short)
+POST http://localhost:8080/auth/signup
+Content-Type: application/json
+
+{
+  "fullName": "Student Studentsson",
+  "email": "student@example.com",
+  "password": "short"
+}
+
+### Invalid Create Note Request (missing title)
+POST http://localhost:8080/notes
+Content-Type: application/json
+Authorization: Bearer {{jwt_token}}
+
+{
+  "content": "Content of the new note",
+  "userId": 1
+}
+
+### Invalid Create Note Request (missing content)
+POST http://localhost:8080/notes
+Content-Type: application/json
+Authorization: Bearer {{jwt_token}}
+
+{
+  "title": "New Note Title",
+  "userId": 1
+}
+
+### Invalid Create Note Request (missing userId)
+POST http://localhost:8080/notes
+Content-Type: application/json
+Authorization: Bearer {{jwt_token}}
+
+{
+  "title": "New Note Title",
+  "content": "Content of the new note"
+}
+
+### Invalid Login Request (missing email)
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "password": "SecurePassword123"
+}
+
+### Invalid Login Request (missing password)
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "student@example.com"
+}
+
+### Invalid Login Request (invalid email format)
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "invalid-email-format",
+  "password": "SecurePassword123"
+}
