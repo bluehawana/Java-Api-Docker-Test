@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
 @NoArgsConstructor
@@ -18,8 +19,11 @@ public class Note {
     private String title;
     private String content;
     private String username;
+    @Setter
+    private Long userId;
 
     public void setUser(User user) {
         this.username = user.getEmail();
     }
+
 }

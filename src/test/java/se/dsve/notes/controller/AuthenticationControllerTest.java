@@ -64,7 +64,7 @@ class AuthenticationControllerTest {
         userDto.setFullName("Student Studentsson");
         userDto.setEmail("student@example.com");
 
-        when(userService.registerUser(any(User.class))).thenReturn(userDto);
+        when(userService.registerUser(UserDto.fromUser(any(User.class)))).thenReturn(userDto);
 
         mockMvc.perform(post("/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON)

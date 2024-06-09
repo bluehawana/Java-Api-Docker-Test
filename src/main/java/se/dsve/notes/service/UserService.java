@@ -16,99 +16,36 @@ import java.util.stream.StreamSupport;
 public class UserService {
     // TODO: Implement UserService
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
-    public List<User> getAllUsers() {
-        return StreamSupport.stream(userRepository.findAll().spliterator(), false).collect(Collectors.toList());
+    public List<UserDto> findAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(this::convertToUserDto)
+                .collect(Collectors.toList());
     }
 
-    public User createUser(UserDto userDto) {
+    public Optional<UserDto> findUserByEmail(String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        return optionalUser.map(this::convertToUserDto);
+    }
+
+    public UserDto registerUser(UserDto userDto) {
         User user = new User();
+        user.setFullName(userDto.getFullName());
         user.setEmail(userDto.getEmail());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        return userRepository.save(user);
+        userRepository.save(user);
+        return convertToUserDto(user);
     }
 
-    public Optional<User> getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+    private UserDto convertToUserDto(User user) {
+        UserDto userDto = new UserDto();
+        userDto.setFullName(user.getFullName());
+        userDto.setEmail(user.getEmail());
+        return userDto;
     }
-
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
-    }
-
-    public boolean deleteUser(Long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isPresent()) {
-            userRepository.delete(optionalUser.get());
-            return true;
-        }
-        return false;
-    }
-
-    public User updateUser(Long id, UserDto userDto) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            user.setEmail(userDto.getEmail());
-            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-            return userRepository.save(user);
-        }
-        return null;
-    }
-
-    public boolean userExists(String email) {
-        return userRepository.findByEmail(email).isPresent();
-    }
-
-    public boolean userExists(Long id) {
-        return userRepository.findById(id).isPresent();
-    }
-
-    public boolean userExists(UserDto userDto) {
-        return userRepository.findByEmail(userDto.getEmail()).isPresent();
-    }
-
-    public boolean userExists(Long id, UserDto userDto) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            return user.getEmail().equals(userDto.getEmail());
-        }
-        return false;
-    }
-
-    public boolean passwordMatches(UserDto userDto) {
-        Optional<User> optionalUser = userRepository.findByEmail(userDto.getEmail());
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            return passwordEncoder.matches(userDto.getPassword(), user.getPassword());
-        }
-        return false;
-    }
-
-    public boolean passwordMatches(Long id, UserDto userDto) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            return passwordEncoder.matches(userDto.getPassword(), user.getPassword());
-        }
-        return false;
-    }
-
-       public boolean passwordMatches(String email, UserDto userDto) {
-           Optional<User> optionalUser = userRepository.findByEmail(email);
-           if (optionalUser.isPresent()) {
-               User user = optionalUser.get();
-               return passwordEncoder.matches(userDto.getPassword(), user.getPassword());
-           }
-           return false;
-
-       }
 }

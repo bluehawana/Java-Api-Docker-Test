@@ -38,6 +38,10 @@ public class AuthenticationService {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
+
+    public String generateToken(User user) {
+        return null;
+    }
     // TODO: Implement AuthenticationService
 
 }
