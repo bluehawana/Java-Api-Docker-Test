@@ -16,5 +16,60 @@ import java.util.stream.StreamSupport;
 
 @Service
 public class NoteService {
+    private final NoteRepository noteRepository;
+    private final UserRepository userRepository;
+
+    @Autowired
+    public NoteService(NoteRepository noteRepository, UserRepository userRepository) {
+        this.noteRepository = noteRepository;
+        this.userRepository = userRepository;
+    }
+
+    public List<Note> getAllNotes() {
+    return StreamSupport.stream(noteRepository.findAll().spliterator(), false).collect(Collectors.toList());
+    }
+
+    public Note createNote(NoteDto noteDto) {
+        Optional<User> optionalUser = userRepository.findById(noteDto.getUserId());
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            Note note = new Note();
+            note.setTitle(noteDto.getTitle());
+            note.setContent(noteDto.getContent());
+            note.setUser(user);
+            return noteRepository.save(note);
+        }
+        return null;
+    }
+
+    public boolean deleteNote(Long id) {
+        Optional <Note> optionalNote = noteRepository.findById(id);
+        if (optionalNote.isPresent()) {
+            noteRepository.delete(optionalNote.get());
+            return true;
+        }
+        return false;
+    }
+
+    public List<NoteWithUsernameDto> getAllNotesWithUsername() {
+    return noteRepository.findAllwithUsername();
+    }
+
+    public Note getNoteById(Long id) {
+        Optional<Note> optionalNote = noteRepository.findById(id);
+        return optionalNote.orElse(null);
+    }
+
+    public Note updateNote(Long id, NoteDto noteDto) {
+        Optional<Note> optionalNote = noteRepository.findById(id);
+        if (optionalNote.isPresent()) {
+            Note note = optionalNote.get();
+            note.setTitle(noteDto.getTitle());
+            note.setContent(noteDto.getContent());
+            return noteRepository.save(note);
+        }
+        return null;
+    }
     // TODO: Implement NoteService
 }
+

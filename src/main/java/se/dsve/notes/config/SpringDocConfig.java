@@ -11,4 +11,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SpringDocConfig {
     // TODO: Implement OpenAPI configuration
+    @Bean
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI()
+                .components(new Components())
+                .info(new Info().title("Notes API").version("1.0.0"))
+                .addSecurityItem(new SecurityRequirement().addList("bearer-jwt", "bearer-jwt"));
+    }
 }
+
+

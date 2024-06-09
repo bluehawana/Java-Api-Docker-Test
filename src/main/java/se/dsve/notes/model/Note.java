@@ -12,4 +12,14 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Note {
     // TODO: Implement Note
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String title;
+    private String content;
+    private String username;
+
+    public void setUser(User user) {
+        this.username = user.getEmail();
+    }
 }

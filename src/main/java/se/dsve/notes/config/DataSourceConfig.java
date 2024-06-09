@@ -21,6 +21,10 @@ public class DataSourceConfig {
     @Bean
     public DataSource dataSource() {
         // TODO: Implement dataSource
-        return null;
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setUrl(databaseUrl);
+        dataSource.setUsername(databaseUser);
+        dataSource.setPassword(databasePassword);
+        return dataSource;
     }
 }

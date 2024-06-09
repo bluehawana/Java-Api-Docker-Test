@@ -18,29 +18,34 @@ public class ApplicationConfiguration {
 
     public ApplicationConfiguration(UserRepository userRepository) {
         // TODO: Implement constructor
+        this.userRepository = userRepository;
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
         // TODO: Implement userDetailsService
-        return null;
+        return username -> userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         // TODO: Implement passwordEncoder
-        return null;
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         // TODO: Implement authenticationManager
-        return null;
+        return config.getAuthenticationManager();
     }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
         // TODO: Implement authenticationProvider
-        return null;
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService());
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
     }
 }
