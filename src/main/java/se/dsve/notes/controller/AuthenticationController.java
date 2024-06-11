@@ -21,7 +21,6 @@ import jakarta.validation.Valid;
 @RequestMapping("/auth")
 @RestController
 public class AuthenticationController {
-    // TODO: Implement AuthenticationController
     private final AuthenticationService authenticationService;
     private final UserService userService;
 
@@ -31,45 +30,38 @@ public class AuthenticationController {
         this.userService = userService;
     }
 
-
     @PostMapping("/signup")
     public ResponseEntity<UserDto> register(@Valid @RequestBody RegisterUserDto registerUserDto) {
-        // TODO: Implement register, the method declaration should not be changed!!!
         if (!isValidEmail(registerUserDto.getEmail())) {
             return ResponseEntity.badRequest().build();
         }
+
         User user = new User();
         user.setFullName(registerUserDto.getFullName());
         user.setEmail(registerUserDto.getEmail());
         user.setPassword(registerUserDto.getPassword());
 
-        // Convert User to UserDto
         UserDto userDto = UserDto.fromUser(user);
-
-        // Register the user
         UserDto registeredUser = userService.registerUser(userDto);
+
         return ResponseEntity.ok(registeredUser);
     }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> authenticate(@Valid @RequestBody LoginUserDto loginUserDto) {
-        // Authenticate the user
         User user = authenticationService.authenticate(loginUserDto.getEmail(), loginUserDto.getPassword());
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        // Generate the JWT token
         String token = authenticationService.generateToken(user);
-
-        // Create the LoginResponse object
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setToken(token);
 
         return ResponseEntity.ok(loginResponse);
     }
+
     private boolean isValidEmail(String email) {
-        // Simple email validation regex pattern
         String emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         return email.matches(emailPattern);
     }

@@ -24,6 +24,6 @@ public class UserDto {
     }
 
     public String getPassword() {
-        return null;
+        return null; // This method is not used in the test, so it can return null
     }
 }
