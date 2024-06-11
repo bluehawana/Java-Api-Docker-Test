@@ -23,7 +23,7 @@ public class JwtService {
     // TODO: Implement JwtService
     private final Key key;
 
-    public JwtService(@Value("${jwt.secret}") String secret) {
+    public JwtService(@Value("${security.jwt.secret-key}") String secret) {
         this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
     }
 

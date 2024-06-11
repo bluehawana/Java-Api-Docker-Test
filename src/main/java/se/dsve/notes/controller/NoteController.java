@@ -1,17 +1,14 @@
 package se.dsve.notes.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import se.dsve.notes.dtos.NoteDto;
-import se.dsve.notes.dtos.NoteWithUsernameDto;
 import se.dsve.notes.model.Note;
 import se.dsve.notes.service.NoteService;
 
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/notes")
@@ -69,9 +66,9 @@ public class NoteController {
 
 
     @GetMapping("/with-username")
-    public ResponseEntity<List<NoteWithUsernameDto>> getAllNotesWithUsername() {
+    public ResponseEntity<List<Note>> getAllNotesWithUsername() {
         // TODO: Implement getAllNotesWithUsername, the method declaration should not be changed!!!
-        List<NoteWithUsernameDto> allNotesWithUsername = noteService.getAllNotesWithUsername();
+        List<Note> allNotesWithUsername = noteService.getAllNotesWithUsername();
         return ResponseEntity.ok(allNotesWithUsername);
     }
 }

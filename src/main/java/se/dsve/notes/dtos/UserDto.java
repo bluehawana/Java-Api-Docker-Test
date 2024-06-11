@@ -23,7 +23,7 @@ public class UserDto {
         return userDto;
     }
 
-    public CharSequence getPassword() {
+    public String getPassword() {
         return null;
     }
 }

@@ -18,10 +18,13 @@ public class DataSourceConfig {
     @Value("${DATABASE_PASSWORD}")
     private String databasePassword;
 
+    @Value("${spring.datasource.driver-class-name}")
+    private String driverClassName;
+
     @Bean
     public DataSource dataSource() {
-        // TODO: Implement dataSource
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(driverClassName);
         dataSource.setUrl(databaseUrl);
         dataSource.setUsername(databaseUser);
         dataSource.setPassword(databasePassword);

@@ -3,7 +3,6 @@ package se.dsve.notes.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.dsve.notes.dtos.NoteDto;
-import se.dsve.notes.dtos.NoteWithUsernameDto;
 import se.dsve.notes.model.Note;
 import se.dsve.notes.model.User;
 import se.dsve.notes.repository.NoteRepository;
@@ -51,8 +50,9 @@ public class NoteService {
         return false;
     }
 
-    public List<NoteWithUsernameDto> getAllNotesWithUsername() {
-    return noteRepository.findAllwithUsername();
+    public List<Note> getAllNotesWithUsername() {
+        String username = "";
+        return noteRepository.findAllByUsername(username);
     }
 
     public Note getNoteById(Long id) {

@@ -7,5 +7,5 @@ import se.dsve.notes.model.Note;
 import java.util.List;
 
 public interface NoteRepository extends JpaRepository<Note, Long> {
-    List<NoteWithUsernameDto> findAllwithUsername();
+    List<Note> findAllByUsername(String username);
 }

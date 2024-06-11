@@ -38,14 +38,13 @@ public class UserService {
         User user = new User();
         user.setFullName(userDto.getFullName());
         user.setEmail(userDto.getEmail());
-        userRepository.save(user);
-        return convertToUserDto(user);
+        user.setPassword(userDto.getPassword());
+
+        User savedUser = userRepository.save(user);
+        return UserDto.fromUser(savedUser);
     }
 
     private UserDto convertToUserDto(User user) {
-        UserDto userDto = new UserDto();
-        userDto.setFullName(user.getFullName());
-        userDto.setEmail(user.getEmail());
-        return userDto;
+        return UserDto.fromUser(user);
     }
 }
