@@ -36,12 +36,11 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().build();
         }
 
-        User user = new User();
-        user.setFullName(registerUserDto.getFullName());
-        user.setEmail(registerUserDto.getEmail());
-        user.setPassword(registerUserDto.getPassword());
+        UserDto userDto = new UserDto();
+        userDto.setFullName(registerUserDto.getFullName());
+        userDto.setEmail(registerUserDto.getEmail());
+        userDto.setPassword(registerUserDto.getPassword());
 
-        UserDto userDto = UserDto.fromUser(user);
         UserDto registeredUser = userService.registerUser(userDto);
 
         return ResponseEntity.ok(registeredUser);

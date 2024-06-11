@@ -64,7 +64,7 @@ class AuthenticationControllerTest {
         userDto.setFullName("Student Studentsson");
         userDto.setEmail("student@example.com");
 
-        when(userService.registerUser(any(UserDto.class))).thenReturn(userDto);
+        when(userService.registerUser(UserDto.fromUser(any(User.class)))).thenReturn(userDto);
 
         mockMvc.perform(post("/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -72,7 +72,6 @@ class AuthenticationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(userDto)));
     }
-
 
     @Test
     void whenInvalidEmail_thenReturns400() throws Exception {

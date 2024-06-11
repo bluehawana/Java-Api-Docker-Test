@@ -10,16 +10,16 @@ import se.dsve.notes.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class UserService {
-    // TODO: Implement UserService
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<UserDto> findAllUsers() {
@@ -38,7 +38,7 @@ public class UserService {
         User user = new User();
         user.setFullName(userDto.getFullName());
         user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         User savedUser = userRepository.save(user);
         return UserDto.fromUser(savedUser);
