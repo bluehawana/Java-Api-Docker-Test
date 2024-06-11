@@ -60,11 +60,13 @@ class AuthenticationControllerTest {
 
     @Test
     void whenValidInput_thenReturns200() throws Exception {
-        UserDto userDto = new UserDto();
-        userDto.setFullName("Student Studentsson");
-        userDto.setEmail("student@example.com");
+        User user = new User();
+        user.setFullName("Student Studentsson");
+        user.setEmail("student@example.com");
 
-        when(userService.registerUser(UserDto.fromUser(any(User.class)))).thenReturn(userDto);
+        UserDto userDto = UserDto.fromUser(user);
+
+        when(userService.registerUser(any(UserDto.class))).thenReturn(userDto);
 
         mockMvc.perform(post("/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON)
