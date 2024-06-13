@@ -52,7 +52,7 @@ public class NoteService {
 
     public List<Note> getAllNotesWithUsername() {
         String username = "";
-        return noteRepository.findAllByUsername(username);
+        return noteRepository.findAllByUser_Email(username);
     }
 
     public Note getNoteById(Long id) {

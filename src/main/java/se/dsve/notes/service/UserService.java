@@ -22,7 +22,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<UserDto> findAllUsers() {
+    public List<UserDto> getAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream()
                 .map(this::convertToUserDto)
@@ -41,7 +41,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         User savedUser = userRepository.save(user);
-        return UserDto.fromUser(savedUser);
+        return convertToUserDto(savedUser);
     }
 
     private UserDto convertToUserDto(User user) {

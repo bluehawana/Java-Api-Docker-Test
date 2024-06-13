@@ -11,6 +11,7 @@ import jakarta.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 public class NoteDto {
+    @NotBlank(message = "Title is required")
     private String title;
     private String content;
     private Long userId;

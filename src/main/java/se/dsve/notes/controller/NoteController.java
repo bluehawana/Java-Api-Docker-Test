@@ -13,7 +13,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/notes")
 public class NoteController {
-    // TODO: Implement
     private final NoteService noteService;
 
     public NoteController(NoteService noteService) {
@@ -22,21 +21,21 @@ public class NoteController {
 
     @PostMapping
     public ResponseEntity<Note> createNote(@Valid @RequestBody NoteDto noteDto) {
-        // TODO: Implement createNote, the method declaration should not be changed!!!
-        Note createNote = noteService.createNote(noteDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createNote);
+        Note createdNote = noteService.createNote(noteDto);
+        if (createdNote == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdNote);
     }
 
     @GetMapping
     public ResponseEntity<List<Note>> getAllNotes() {
-        // TODO: Implement getAllNotes, the method declaration should not be changed!!!
         List<Note> allNotes = noteService.getAllNotes();
         return ResponseEntity.ok(allNotes);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Note> getNoteById(@PathVariable Long id) {
-        // TODO: Implement getNoteById, the method declaration should not be changed!!!
         Note note = noteService.getNoteById(id);
         if (note == null) {
             return ResponseEntity.notFound().build();
@@ -46,7 +45,6 @@ public class NoteController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Note> updateNote(@PathVariable Long id, @Valid @RequestBody NoteDto noteDto) {
-        // TODO: Implement updateNote, the method declaration should not be changed!!!
         Note updatedNote = noteService.updateNote(id, noteDto);
         if (updatedNote == null) {
             return ResponseEntity.notFound().build();
@@ -56,7 +54,6 @@ public class NoteController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteNote(@PathVariable Long id) {
-        // TODO: Implement deleteNote, the method declaration should not be changed!!!
         boolean deleted = noteService.deleteNote(id);
         if (!deleted) {
             return ResponseEntity.notFound().build();
@@ -64,10 +61,8 @@ public class NoteController {
         return ResponseEntity.noContent().build();
     }
 
-
     @GetMapping("/with-username")
     public ResponseEntity<List<Note>> getAllNotesWithUsername() {
-        // TODO: Implement getAllNotesWithUsername, the method declaration should not be changed!!!
         List<Note> allNotesWithUsername = noteService.getAllNotesWithUsername();
         return ResponseEntity.ok(allNotesWithUsername);
     }

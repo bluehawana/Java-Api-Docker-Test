@@ -3,7 +3,6 @@ package se.dsve.notes.exceptions;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ProblemDetail;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -12,23 +11,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.validation.FieldError;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpStatusCode;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.springframework.http.ProblemDetail.*;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    // TODO: Implement GlobalExceptionHandler
-    private ResponseEntity<Map<String, Object>> buildErrorResponse(HttpStatus status, String title, String detail) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("status", status.value());
-        body.put("title", title);
-        body.put("detail", detail);
-        return ResponseEntity.status(status).body(body);
-    }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Map<String, Object>> handleBadCredentialsException(BadCredentialsException e) {
@@ -55,6 +44,14 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.UNAUTHORIZED, "Token expired", e.getMessage());
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+        String error = ex.getBindingResult().getAllErrors().stream()
+                .map(org.springframework.validation.ObjectError::getDefaultMessage)
+                .collect(Collectors.joining(", "));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGenericException(Exception e) {
         return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", "An unexpected error occurred");
@@ -65,7 +62,6 @@ public class GlobalExceptionHandler {
         body.put("status", status.value());
         body.put("title", title);
         body.put("detail", detail);
-
         return ResponseEntity.status(status).body(body);
     }
 }

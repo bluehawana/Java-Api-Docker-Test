@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.Setter;
 import se.dsve.notes.model.User;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -11,24 +12,36 @@ public class UserDto {
     private Long id;
     private String fullName;
     private String email;
-    private Date createdAt;
-    private Date updatedAt;
-    // This method is not used in the test, so it can be empty
-    @Setter
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private String password;
 
+    public UserDto() {
+    }
+
+    public UserDto(Long id, String fullName, String email, LocalDateTime createdAt, LocalDateTime updatedAt, String password) {
+        this.id = id;
+        this.fullName = fullName;
+        this.email = email;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.password = password;
+    }
+
+    public UserDto(Long id, String fullName, String email, Date createdAt, Date updatedAt, String password) {
+    }
+
     public static UserDto fromUser(User user) {
-        UserDto userDto = new UserDto();
-        userDto.setId(user.getId());
-        userDto.setFullName(user.getFullName());
-        userDto.setEmail(user.getEmail());
-        userDto.setCreatedAt(user.getCreatedAt());
-        userDto.setUpdatedAt(user.getUpdatedAt());
-        return userDto;
+        return new UserDto(
+                user.getId(),
+                user.getFullName(),
+                user.getEmail(),
+                user.getCreatedAt(),
+                user.getUpdatedAt(),
+                user.getPassword()
+        );
     }
 
-    public String getPassword() {
-        return null; // This method is not used in the test, so it can return null
-    }
-
+    // Getters and setters
+    // ...
 }

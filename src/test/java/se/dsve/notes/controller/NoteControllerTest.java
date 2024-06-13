@@ -18,7 +18,7 @@ import se.dsve.notes.service.NoteService;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(NoteController.class)
 @Import(TestSecurityConfig.class)
@@ -52,19 +52,24 @@ class NoteControllerTest {
     }
 
     @Test
-    void whenValidInput_thenReturns200() throws Exception {
-        Note note = new Note();
-        note.setId(1L);
-        note.setTitle("New Note Title");
-        note.setContent("Content of the new note");
-        note.setUserId(1L);
+    void whenValidInput_thenReturns201() throws Exception {
+        NoteDto noteDto = new NoteDto();
+        noteDto.setTitle("New Note Title");
+        noteDto.setContent("Content of the new note");
+        noteDto.setUserId(1L);
 
-        when(noteService.createNote(any(NoteDto.class))).thenReturn(note);
+        Note createdNote = new Note();
+        createdNote.setId(1L);
+        createdNote.setTitle(noteDto.getTitle());
+        createdNote.setContent(noteDto.getContent());
+        createdNote.setUserId(noteDto.getUserId());
+
+        when(noteService.createNote(any(NoteDto.class))).thenReturn(createdNote);
 
         mockMvc.perform(post("/notes")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(validNoteDto)))
-                .andExpect(status().isOk());
+                        .content(objectMapper.writeValueAsString(noteDto)))
+                .andExpect(status().isCreated());
     }
 
     @Test
