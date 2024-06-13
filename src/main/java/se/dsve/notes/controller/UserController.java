@@ -1,6 +1,6 @@
 package se.dsve.notes.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +18,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -32,6 +31,7 @@ public class UserController {
     @GetMapping("/{email}")
     public ResponseEntity<UserDto> findUserByEmail(@PathVariable String email) {
         Optional<UserDto> userDto = userService.findUserByEmail(email);
-        return userDto.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return userDto.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
