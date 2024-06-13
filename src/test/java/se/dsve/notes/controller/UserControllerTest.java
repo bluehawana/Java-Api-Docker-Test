@@ -74,7 +74,6 @@ class UserControllerTest {
                 .andExpect(jsonPath("$[1].email").value("jane@example.com"));
     }
 
-
     @Test
     void findUserByEmail_invalidEmail_returns404() throws Exception {
         when(userService.findUserByEmail(anyString())).thenReturn(Optional.empty());
