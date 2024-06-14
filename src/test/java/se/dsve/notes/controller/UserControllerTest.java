@@ -9,12 +9,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import se.dsve.notes.TestSecurityConfig;
 import se.dsve.notes.dtos.UserDto;
 import se.dsve.notes.model.User;
 import se.dsve.notes.service.JwtService;
 import se.dsve.notes.service.UserService;
-
+import test.se.dsve.notes.TestSecurityConfig;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;

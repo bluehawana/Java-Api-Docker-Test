@@ -9,7 +9,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import se.dsve.notes.TestSecurityConfig;
 import se.dsve.notes.dtos.RegisterUserDto;
 import se.dsve.notes.dtos.UserDto;
 import se.dsve.notes.model.User;
@@ -24,7 +23,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AuthenticationController.class)
-@Import(TestSecurityConfig.class)
 class AuthenticationControllerTest {
 
     @Autowired
