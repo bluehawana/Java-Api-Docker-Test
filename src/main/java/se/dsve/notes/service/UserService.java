@@ -34,11 +34,11 @@ public class UserService {
         return optionalUser.map(this::convertToUserDto);
     }
 
-    public UserDto registerUser(UserDto userDto) {
-        User user = new User();
-        user.setFullName(userDto.getFullName());
-        user.setEmail(userDto.getEmail());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+    public UserDto registerUser(User user) {
+        User newUser = new User();
+        newUser.setFullName(user.getFullName());
+        newUser.setEmail(user.getEmail());
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
 
         User savedUser = userRepository.save(user);
         return convertToUserDto(savedUser);
@@ -46,5 +46,12 @@ public class UserService {
 
     private UserDto convertToUserDto(User user) {
         return UserDto.fromUser(user);
+    }
+
+    public List<UserDto> findAllUsers() {
+        //converts all users to UserDto
+        return userRepository.findAll().stream()
+                .map(UserDto::fromUser)
+                .collect(Collectors.toList());
     }
 }

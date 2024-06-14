@@ -13,7 +13,6 @@ import se.dsve.notes.dtos.UserDto;
 import se.dsve.notes.model.LoginResponse;
 import se.dsve.notes.model.User;
 import se.dsve.notes.service.AuthenticationService;
-import se.dsve.notes.service.JwtService;
 import se.dsve.notes.service.UserService;
 
 import jakarta.validation.Valid;
@@ -36,7 +35,7 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().build();
         }
 
-        UserDto userDto = new UserDto();
+        User userDto = new User();
         userDto.setFullName(registerUserDto.getFullName());
         userDto.setEmail(registerUserDto.getEmail());
         userDto.setPassword(registerUserDto.getPassword());

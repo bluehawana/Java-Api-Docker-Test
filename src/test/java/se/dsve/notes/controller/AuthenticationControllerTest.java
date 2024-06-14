@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import se.dsve.notes.dtos.RegisterUserDto;
@@ -63,7 +62,7 @@ class AuthenticationControllerTest {
         userDto.setEmail("student@example.com");
 
         // Mock the service to return the userDto when any UserDto is passed
-        when(userService.registerUser(any(UserDto.class))).thenReturn(userDto);
+        when(userService.registerUser(any(User.class))).thenReturn(userDto);
 
         mockMvc.perform(post("/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON)
